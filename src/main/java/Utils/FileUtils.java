@@ -9,6 +9,13 @@ import java.util.List;
  */
 public class FileUtils {
 
+    public static void createFolder(String originalPathAndFileName){
+        String tempFileName=originalPathAndFileName.substring(0,originalPathAndFileName.lastIndexOf("\\"));   //获取文件名前的部分，以便创建存放txt文件的文件夹
+        File tempFile = new File(tempFileName+"\\dealt");                   //创建文件夹
+        if(!tempFile.exists() && !tempFile.isDirectory()){
+            tempFile.mkdir();                               //如果不存在此名称的文件夹，就创建一个
+        }
+    }
 
     //递归查找指定目录下的所有指定拓展名的文件，将返回文件名的list
     public static List<String> findByEx(String suffix,String dirName) {
