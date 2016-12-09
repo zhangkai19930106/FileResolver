@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class FileUtils {
 
+    //如果用户未输入保存路径，就会在当前目录下创建一个dealt目录，以便存放处理后的txt文件
     public static void createFolder(String originalPathAndFileName){
         String tempFileName=originalPathAndFileName.substring(0,originalPathAndFileName.lastIndexOf("\\"));   //获取文件名前的部分，以便创建存放txt文件的文件夹
         File tempFile = new File(tempFileName+"\\dealt");                   //创建文件夹
