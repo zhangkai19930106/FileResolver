@@ -42,7 +42,6 @@ public class XmlToTxt {
         String b;
         int retractFlag=-2;    //缩进flag
         boolean newline=false; //换行flag
-        boolean searchFlag;    //是否已经处理完的flag
         String headTag=null;   //暂存标签头
         String content=null;   //暂存标签体
         boolean head_find;     //匹配到标签头
@@ -54,7 +53,6 @@ public class XmlToTxt {
 
         try{
             while((b=bufferedReader.readLine())!=null){                    //如果没有复制完就循环
-                searchFlag=false;
                 Matcher head_matcher = head_pattern.matcher(b);
                 Matcher content_matcher = content_pattern.matcher(b);
                 Matcher tail_matcher = tail_pattern.matcher(b);
@@ -68,18 +66,16 @@ public class XmlToTxt {
                 }else if(head_find && tail_find){                       //匹配到正常标签
                     if(newline==true){
                         for(int i=0;i<=retractFlag-1;i++){              //缩进
-                            bufferedWriter.write("\t");
+                            bufferedWriter.write("   ");
                         }
                         newline=false;
                         bufferedWriter.write(content_matcher.group(1));         //将提取的内容写入文件
                         bufferedWriter.write(separate);                 //将用户输入的分隔符写入文件
-                        searchFlag=true;
                     }else{
                         bufferedWriter.write(content_matcher.group(1));         //将提取的内容写入文件
                         bufferedWriter.write(separate);                 //将用户输入的分隔符写入文件
-                        searchFlag=true;
                     }
-                }else if(head_find && content_find && searchFlag==false){   //处理标签头和尾不在一行的情况
+                }else if(head_find && content_find){   //处理标签头和尾不在一行的情况
                     headTag = head_matcher.group(1);
                     content = content_matcher.group(1);
                     if(newline==false){
@@ -95,7 +91,7 @@ public class XmlToTxt {
                 }else if(tail_find && content_find==false){             //匹配到标签尾，处理缩进
                     if(headTag!=null && headTag.equals(tail_matcher.group(1))){
                         for(int i=0;i<=retractFlag-1;i++){
-                            bufferedWriter.write("\t");
+                            bufferedWriter.write("   ");
                         }
                         bufferedWriter.write(content+"\r");
                     }else{
@@ -114,8 +110,8 @@ public class XmlToTxt {
             bufferedWriter.close();
         }
         long EndTime = System.currentTimeMillis();                    //获取操作结束时间
-        System.out.println("NoDeal: "+originalPathAndFileName);
-        System.out.println("Dealt: "+dealPath + "   Time:" + (EndTime - StartTime) + " ms");
+        System.out.println("未处理之前的文件: "+originalPathAndFileName);
+        System.out.println("处理之后的文件: "+dealPath + "   Time:" + (EndTime - StartTime) + " ms");
     }
     public static void main(String[] args){
         System.out.println("输入要解析的文件路径(文件所在的根目录)：");
