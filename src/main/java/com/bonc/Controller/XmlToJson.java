@@ -3,11 +3,13 @@ package com.bonc.Controller;
 import com.bonc.Entity.Node;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,6 +29,7 @@ import java.util.regex.Pattern;
                 System.out.println(xmlToJson.operation(new File("C:\\Users\\ZK\\Desktop\\test.xml")));
             }
 
+            @RequestMapping(value = "/operation",method = RequestMethod.POST)
             public String operation(File file) throws Exception {
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 Pattern tag_head = Pattern.compile("<([^>|^/|^?]+)>");
